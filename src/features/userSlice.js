@@ -24,6 +24,8 @@ export const loadUser = createAsyncThunk('user/loadUser', async(obj, {rejectWith
     console.log(response)
     return response.data
    }catch(err) {
+       localStorage.removeItem('token');
+       api.defaults.headers['Authorization'] = null;
        return rejectWithValue(err.response.data);
    }
 })

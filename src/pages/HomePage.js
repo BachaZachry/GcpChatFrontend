@@ -15,8 +15,8 @@ export const HomePage = () => {
     }
     useEffect(() => {
         if (userStatus==="idle") {
-        dispatch(loadUser());}
-        
+        dispatch(loadUser());
+    }    
     }, [userStatus,dispatch])
     useEffect(() => {
         if (userStatus==="failed") {
