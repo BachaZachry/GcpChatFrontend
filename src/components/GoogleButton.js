@@ -3,19 +3,19 @@ import React, { useEffect } from 'react'
 import { useHistory } from "react-router-dom";
 import { googleLogin } from "../features/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { loadUser } from "../features/userSlice";
+import { googleUserLogin, loadUser } from "../features/userSlice";
 
 export const GoogleButton = () => {
     const history = useHistory();
     const dispatch = useDispatch();
     const userStatus = useSelector((state) => state.user.status);
+    // Login procedure
     async function responseGoogle (response) {
-        await googleLogin(response.accessToken)
+        await dispatch(googleUserLogin(response.accessToken))
         history.push("/");
     }
-    async function failure (error) {
-        console.log(error);
-    }
+
+    // In case of manually writing the login url
     useEffect(() => {
         if (userStatus==="idle" || userStatus==="failed"){
             if (localStorage.getItem('token') != null) {
@@ -23,11 +23,14 @@ export const GoogleButton = () => {
             }
     }
     }, [userStatus])
+
+    // Redirecting to the main page in case of writing the login url and being connected
     useEffect(() => {
         if (userStatus==="succeeded") {
             history.push("/")
         }
     }, [userStatus])
+    
     return (
         <GoogleLogin clientId="1086883892528-l8brh0uvvub1pstb511v7og41ffpfssr.apps.googleusercontent.com"
                          buttonText="Log in with Google"
