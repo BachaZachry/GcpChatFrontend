@@ -53,6 +53,23 @@ export const userLogin = createAsyncThunk('user/userLogin', async(credentials, {
     }
 })
 
+export const userRegister = createAsyncThunk('user/userRegister', async(credentials, {rejectWithValue}) => {
+    try {
+        const response = await api.post('users/register/',
+            {
+                username: credentials.username,
+                email: credentials.email,
+                password: credentials.password
+            });
+        api.defaults.headers['Authorization'] = 'Token ' + response.data.token
+        localStorage.setItem('token',response.data.token)
+        return response.data
+    } catch (err) {
+        
+        return rejectWithValue(err.response.data);
+    }
+})
+
 const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -89,6 +106,17 @@ const userSlice = createSlice({
             state.username = action.payload.username
         },
         [userLogin.rejected] : (state, action) => {
+            state.status = 'failed'
+            state.error = action.payload
+        },
+        [userRegister.pending] : (state, action) => {
+            state.status = 'loading'
+        },
+        [userRegister.fulfilled] : (state, action) => {
+            state.status = 'succeeded'
+            state.username = action.payload.user.username
+        },
+        [userRegister.rejected] : (state, action) => {
             state.status = 'failed'
             state.error = action.payload
         },

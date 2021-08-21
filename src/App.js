@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import { LoginPage } from './pages/LoginPage';
 import { HomePage} from './pages/HomePage';
+import { RegisterPage } from './pages/RegisterPage';
 
 function App() {
   return (
@@ -15,8 +16,11 @@ function App() {
         <Route path="/login">
           <LoginPage />
         </Route>
-        <Route>
+        <Route exact path="/">
           <HomePage />
+        </Route>
+        <Route path="/register">
+          <RegisterPage />
         </Route>
       </Switch>
     </div>
