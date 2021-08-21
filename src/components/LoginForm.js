@@ -1,19 +1,21 @@
 import { unwrapResult } from '@reduxjs/toolkit';
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { userLogin } from '../features/userSlice';
+import { userLogin, userStatusSelector } from '../features/userSlice';
 
 export const LoginForm = () => {
     const [username,setUsername] = useState('');
     const [password,setPassword] = useState('');
-    const userStatus = useSelector((state) => state.user.status);
+    const userStatus = useSelector(userStatusSelector);
     const dispatch = useDispatch();
     const onUsernameChanged = (e) => setUsername(e.target.value);
     const onPasswordChanged = (e) => setPassword(e.target.value);
     const canSave = 
-        [username,password].every(Boolean) && userStatus === 'idle';
+        [username,password].every(Boolean);
     const login = async () => {
+        if (canSave) {
             await dispatch(userLogin({username,password}));
+        }
     }
     return (
         <div>
