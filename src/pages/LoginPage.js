@@ -3,12 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { GoogleButton } from '../components/GoogleButton';
 import { LoginForm } from '../components/LoginForm';
-import { loadUser } from '../features/userSlice';
+import { loadUser, userStatusSelector } from '../features/userSlice';
 
 export const LoginPage = () => {
     const error = useSelector((state) => state.user.error);
     const history = useHistory();
-    const userStatus = useSelector((state) => state.user.status);
+    const userStatus = useSelector(userStatusSelector);
     const dispatch = useDispatch();
     const bol = error != null
 
@@ -27,6 +27,7 @@ export const LoginPage = () => {
             history.push("/")
         }
     }, [userStatus])
+    
     return (
         <div>
             { userStatus === "loading" ? <div>loading</div> :

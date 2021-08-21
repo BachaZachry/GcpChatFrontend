@@ -1,13 +1,12 @@
 import GoogleLogin from "react-google-login";
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { googleUserLogin, loadUser } from "../features/userSlice";
+import { useDispatch } from "react-redux";
+import { googleUserLogin } from "../features/userSlice";
 
 export const GoogleButton = () => {
     const history = useHistory();
     const dispatch = useDispatch();
-    const userStatus = useSelector((state) => state.user.status);
     // Login procedure
     async function responseGoogle (response) {
         await dispatch(googleUserLogin(response.accessToken))

@@ -7,6 +7,7 @@ const initialState = {
     error:null
 }
 
+// Load user information
 export const loadUser = createAsyncThunk('user/loadUser', async(obj, {rejectWithValue}) => {
    try{
         const response = await api.get('users/loaduser/');
@@ -20,6 +21,7 @@ export const loadUser = createAsyncThunk('user/loadUser', async(obj, {rejectWith
    }
 })
 
+// Login using google
 export const googleUserLogin = createAsyncThunk('user/googleUserLogin', async(accesstoken,{rejectWithValue}) => {
     try {
         const response = await api.post('users/rest-auth/google/', 
@@ -34,6 +36,7 @@ export const googleUserLogin = createAsyncThunk('user/googleUserLogin', async(ac
     }
 })
 
+// Normal user login
 export const userLogin = createAsyncThunk('user/userLogin', async(credentials, {rejectWithValue}) => {
     try {
         const response = await api.post('users/login/',
@@ -93,3 +96,6 @@ const userSlice = createSlice({
 })
 
 export default userSlice.reducer
+
+// Selectors
+export const userStatusSelector = (state) => state.user.status;
